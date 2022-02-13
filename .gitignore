@@ -1,6 +1,5 @@
 .vscode
 
-*.txt
 *.gz
 *.dat
 *.png
