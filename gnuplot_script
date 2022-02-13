@@ -1,0 +1,10 @@
+set grid
+set term png
+set output "plot.png"
+set title "Execution Time by Damping factor"
+set xlabel "Damping factor"
+set ylabel "Time (sec)"
+set xtic 0.025
+set boxwidth 0.01
+set style fill solid
+plot "benchmark.dat" u 1:2 w boxes t ''
