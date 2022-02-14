@@ -14,5 +14,5 @@ else
     # run the script
     make benchmark
     ./benchmark $1
-    gnuplot gnuplot_script
+    gnuplot gnuplot_script.gnu
 fi
