@@ -3,3 +3,7 @@
 *.gz
 *.dat
 *.png
+
+# binary
+benchmark
+program
