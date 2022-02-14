@@ -11,6 +11,7 @@ benchmark: benchmark.c utils.o pagerank.o
 	$(CC) -o benchmark benchmark.c utils.o pagerank.o $(CCFLAGS)
 	rm -f *.o
 
+program: CCFLAGS += -O3
 program: main.c utils.o pagerank.o
 	$(CC) -o program main.c utils.o pagerank.o $(CCFLAGS)
 	rm -f *.o
