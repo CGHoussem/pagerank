@@ -5,12 +5,13 @@
 
 #define EPSILON 1e-06
 
-uint pagerank(uint N, float **matrix, double *p, float d, uint max_iter)
+PR pagerank(uint N, float **matrix, double *p, float d, uint max_iter)
 {
 	unsigned char running = 1;
 	uint iter = 0;
 	double p_new[N];
 	double p_old[N];
+	PR pr;
 
 	// create a copy of p
 	for (size_t i = 0; i < N; i++) 
@@ -46,5 +47,20 @@ uint pagerank(uint N, float **matrix, double *p, float d, uint max_iter)
 		iter += 1;
 	}
 
-	return iter;
+	pr.nbr_iter_convergence = iter;
+
+	// search for the important node
+	double max_v = -1.0f;
+    uint max_i = 0;
+    for (size_t i = 0; i < N; i++)
+    {
+        if (p_old[i] >= max_v) {
+            max_v = p_old[i];
+            max_i = i;
+        }
+    }
+	pr.important_node_index = max_i;
+	pr.important_node_prob = max_v;
+
+	return pr;
 }

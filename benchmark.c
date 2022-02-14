@@ -10,7 +10,7 @@
 #include "structures.h"
 
 #define MAX_NODES 		10000
-#define MAX_ITERATIONS	100
+#define MAX_ITERATIONS	500
 #define MAX_AVG_ITER	10
 
 int main(int argc, char **argv)
@@ -46,7 +46,7 @@ int main(int argc, char **argv)
 	}
 	init_matrix(matrix_a, MAX_NODES, 0.0f);
 
-// counting and mapping nodes to the adjacency matrix
+	// counting and mapping nodes to the adjacency matrix
 	long nodes[MAX_NODES];
 	for (size_t i = 0; i < MAX_NODES; i++)
 		nodes[i] = -1;
@@ -142,29 +142,42 @@ int main(int argc, char **argv)
 		p[i] = 1.0f / N;
 
 	// PageRank benchmark
-	double dumping_factors[9] = {.70f, .725f, .75f, .775f, .80f, .825f, .85f, .875f, .90f};
-	double ts_avg[9];
-	uint iters_to_converge[9];
+	uint benchmark_n = 41;
+	double dumping_factors[benchmark_n];
+	double ts_avg[benchmark_n];
+	uint iters_to_converge[benchmark_n];
+	uint important_node_index[benchmark_n];
+	double important_node_prob[benchmark_n];
+	double x = 0;
+	for (size_t i = 0; i < benchmark_n; i++)
+	{
+		dumping_factors[i] = x;
+		x += 0.025;
+	}
 	
-	for (size_t i = 0; i < 9; i++)
+	for (size_t i = 0; i < benchmark_n; i++)
 	{
 		double sum = 0.0;
 		double d = dumping_factors[i];
+		PR pr;
 		for (size_t it = 0; it < MAX_AVG_ITER; it++)
 		{
 			clock_t begin = clock();
-			iters_to_converge[i] = pagerank(N, matrix_at, p, d, MAX_ITERATIONS);
+			pr = pagerank(N, matrix_at, p, d, MAX_ITERATIONS);
 			clock_t end = clock();
 			sum += (double)(end - begin) / CLOCKS_PER_SEC;
 		}
+		iters_to_converge[i] = pr.nbr_iter_convergence;
+		important_node_index[i] = pr.important_node_index;
+		important_node_prob[i] = pr.important_node_prob;
 		ts_avg[i] = sum / MAX_AVG_ITER;
 	}
 
 	// creating the benchmark data file
 	FILE *output_file = fopen("benchmark.dat", "w");
-	fprintf(output_file, "# dumping_factor\ttime (sec)\titers_2_converge\n");
-	for (size_t i = 0; i < 9; i++)
-		fprintf(output_file, "%.2f\t%lf\t%d\n", dumping_factors[i], ts_avg[i], iters_to_converge[i]);
+	fprintf(output_file, "# damping; time; iters; node; prob\n");
+	for (size_t i = 0; i < benchmark_n; i++)
+		fprintf(output_file, "%.3f; %.8lf; %d; %d; %lf\n", dumping_factors[i], ts_avg[i], iters_to_converge[i], important_node_index[i], important_node_prob[i]);
 	fclose(output_file);
 
 	// freeing unecessary memory and closing the dataset file

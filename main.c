@@ -224,8 +224,8 @@ int main(int argc, char** argv) {
 
     // PageRank benchmark
     clock_t begin = clock();
-
-    uint iter = pagerank(N, matrix_at, p, dumping_factor, max_iter);
+    PR pr = pagerank(N, matrix_at, p, dumping_factor, max_iter);
+    uint iter = pr.nbr_iter_convergence;
 
     clock_t end = clock();
     double time_spent = (double)(end - begin) / CLOCKS_PER_SEC;
