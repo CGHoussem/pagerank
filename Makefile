@@ -6,6 +6,7 @@ all: program
 debug: CCFLAGS += -DDEBUG -g
 debug: program
 
+benchmark: CCFLAGS += -O3
 benchmark: benchmark.c utils.o pagerank.o
 	$(CC) -o benchmark benchmark.c utils.o pagerank.o $(CCFLAGS)
 	rm -f *.o
