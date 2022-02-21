@@ -98,7 +98,7 @@ int main(int argc, char** argv) {
     if (matrix_a == NULL) 
     {
         fclose(dataset_file);
-        fprintf(stderr, "Error reallocating (reducing size) adjacency matrix\n");
+        fprintf(stderr, "Error reallocating (reducing size) the adjacency matrix\n");
         exit(EXIT_FAILURE);
     }
 
