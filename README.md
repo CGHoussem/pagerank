@@ -62,3 +62,4 @@ There are 3 different compilation versions:
 ## Extra
 You are able to run the plotting script using the gnuplot script on a data file respecting the benchmark data output format: `gnuplot gnuplot_script.gnu`
 
+![](plot.png)
